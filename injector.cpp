@@ -28,7 +28,6 @@ int main()
 	cin >> strDLL;
 	GetFullPathName((strDLL.c_str()), MAX_PATH, full_path, NULL);
 	Inject(pid, full_path);
-	//Inject(pid, "C:\\Users\\Ryan\\Documents\\projects\\DllInjector\\dll.dll");
 	system("pause");
 	return 0;
 }
