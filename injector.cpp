@@ -28,34 +28,34 @@ int main()
 	cin >> strDLL;
 	GetFullPathName((strDLL.c_str()), MAX_PATH, full_path, NULL);
 	Inject(pid, full_path);
-    //Inject(pid, "C:\\Users\\Ryan\\Documents\\projects\\DllInjector\\dll.dll");
-    system("pause");
-    return 0;
+	//Inject(pid, "C:\\Users\\Ryan\\Documents\\projects\\DllInjector\\dll.dll");
+	system("pause");
+	return 0;
 }
 
 bool Inject(DWORD pId, char *dllName)
 {
-    HANDLE h = OpenProcess(PROCESS_ALL_ACCESS, false, pId);
-    if(h)
-    {
-        LPVOID LoadLibAddr = (LPVOID)GetProcAddress(GetModuleHandleA("kernel32.dll"), "LoadLibraryA");
-        cout << "[!] Initialized Library\n";
-        LPVOID dereercomp = VirtualAllocEx(h, NULL, strlen(dllName), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+	HANDLE h = OpenProcess(PROCESS_ALL_ACCESS, false, pId);
+	if(h)
+	{
+		LPVOID LoadLibAddr = (LPVOID)GetProcAddress(GetModuleHandleA("kernel32.dll"), "LoadLibraryA");
+	        cout << "[!] Initialized Library\n";
+	        LPVOID dereercomp = VirtualAllocEx(h, NULL, strlen(dllName), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 		cout << "[!] Initialized memory allocation\n";
-        WriteProcessMemory(h, dereercomp, dllName, strlen(dllName), NULL);
-        cout << "[!] Wrote dll name to memory: " << strlen(dllName) << " byte(s)\n";
-        HANDLE asdc = CreateRemoteThread(h, NULL, NULL, (LPTHREAD_START_ROUTINE)LoadLibAddr, dereercomp, 0, NULL);
+	        WriteProcessMemory(h, dereercomp, dllName, strlen(dllName), NULL);
+	        cout << "[!] Wrote dll name to memory: " << strlen(dllName) << " byte(s)\n";
+	        HANDLE asdc = CreateRemoteThread(h, NULL, NULL, (LPTHREAD_START_ROUTINE)LoadLibAddr, dereercomp, 0, NULL);
 		cout << "[!] Created remote thread: " << asdc << endl;
 		cout << "[!] Waiting for Dll exit...\n";
-        WaitForSingleObject(asdc, INFINITE);
-        VirtualFreeEx(h, dereercomp, strlen(dllName), MEM_RELEASE);
-        cout << "[!] Freeing memory\n";
-        CloseHandle(asdc);
-        CloseHandle(h);
-        cout << "[!] Closed all handles\n";
-        return true;
-        cout << "[!] Complete!\n";
-    }
-    return false;
-    cout << "[!] That process does not exist\n";
+	        WaitForSingleObject(asdc, INFINITE);
+	        VirtualFreeEx(h, dereercomp, strlen(dllName), MEM_RELEASE);
+	        cout << "[!] Freeing memory\n";
+	        CloseHandle(asdc);
+	        CloseHandle(h);
+	        cout << "[!] Closed all handles\n";
+	        return true;
+	        cout << "[!] Complete!\n";
+	}
+	return false;
+	cout << "[!] That process does not exist\n";
 }
