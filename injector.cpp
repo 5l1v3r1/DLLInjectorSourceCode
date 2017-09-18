@@ -55,6 +55,6 @@ bool Inject(DWORD pId, char *dllName)
 	        return true;
 	        cout << "[!] Complete!\n";
 	}
-	return false;
 	cout << "[!] That process does not exist\n";
+	return false;
 }
